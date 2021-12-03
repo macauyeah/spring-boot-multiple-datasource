@@ -1,4 +1,4 @@
-package macauyeah.personal.springbootdatajpa.entityone.database.configuration;
+package macauyeah.personal.springbootdatajpa.entitytwo.database.configuration;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -28,40 +28,38 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 // @formatter:off
 @EnableJpaRepositories(
-    entityManagerFactoryRef = "entityOneEntityManagerFactory",
-    transactionManagerRef = "entityOneTransactionManager",
+    entityManagerFactoryRef = "entityTwoEntityManagerFactory",
+    transactionManagerRef = "entityTwoTransactionManager",
     basePackages = {
-        "macauyeah.personal.springbootdatajpa.entityone.database.entity",
-        "macauyeah.personal.springbootdatajpa.entityone.database.repository"
+        "macauyeah.personal.springbootdatajpa.entitytwo.database.entity",
+        "macauyeah.personal.springbootdatajpa.entitytwo.database.repository"
     }
 )
 // @formatter:on
-public class EntityOneDataSourceConfiguration {
-    @Bean(name = "entityOneDataSource")
-    // @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.macauyeah.personal.entityone")
-    public DataSource entityOneDataSource() {
+public class EntityTwoDataSourceConfiguration {
+    @Bean(name = "entityTwoDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.macauyeah.personal.entitytwo")
+    public DataSource entityTwoDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "entityOneTransactionManager")
-    PlatformTransactionManager entityOneTransactionManager(
-            @Qualifier("entityOneEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = "entityTwoTransactionManager")
+    PlatformTransactionManager entityTwoTransactionManager(
+            @Qualifier("entityTwoEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
     // @formatter:off
-    @Bean(name = "entityOneEntityManagerFactory")
-    // @Primary
-    LocalContainerEntityManagerFactoryBean entityOneEntityManagerFactory(
+    @Bean(name = "entityTwoEntityManagerFactory")
+    LocalContainerEntityManagerFactoryBean entityTwoEntityManagerFactory(
         EntityManagerFactoryBuilder factoryBuilder,
-        @Qualifier("entityOneDataSource") DataSource dataSource,
-        @Qualifier("entityOneJpaVendorAdapter") JpaVendorAdapter vendorAdapter)
+        @Qualifier("entityTwoDataSource") DataSource dataSource,
+        @Qualifier("entityTwoJpaVendorAdapter") JpaVendorAdapter vendorAdapter)
     {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = factoryBuilder
             .dataSource(dataSource)
             .properties(jpaProperties())
-            .packages("macauyeah.personal.springbootdatajpa.entityone.database.entity")
+            .packages("macauyeah.personal.springbootdatajpa.entitytwo.database.entity")
             .build();
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
         return entityManagerFactoryBean;
@@ -75,15 +73,13 @@ public class EntityOneDataSourceConfiguration {
         return props;
     }
 
-    @Bean(name = "entityOneJdbcTemplate")
-    // @Primary
-    public JdbcTemplate entityOneJdbcTemplate(@Qualifier("entityOneDataSource") DataSource dataSource) {
+    @Bean(name = "entityTwoJdbcTemplate")
+    public JdbcTemplate entityTwoJdbcTemplate(@Qualifier("entityTwoDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
-    @Bean(name = { "entityOneJpaVendorAdapter" })
-    // @Primary
-    @ConfigurationProperties(prefix = "spring.jpa.macauyeah.personal.entityone")
+    @Bean(name = { "entityTwoJpaVendorAdapter" })
+    @ConfigurationProperties(prefix = "spring.jpa.macauyeah.personal.entitytwo")
     public JpaVendorAdapter jpaVendorAdapter() {
         return (JpaVendorAdapter) new HibernateJpaVendorAdapter();
     }

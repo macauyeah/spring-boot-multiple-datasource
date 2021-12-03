@@ -3,39 +3,40 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.7</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>macauyeah.personal.springbootdatajpa</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.0.2-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>macauyeah.personal.springbootdatajpa</groupId>
-	<artifactId>parent</artifactId>
+	<artifactId>applicationRunner</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>parent</name>
-	<packaging>pom</packaging>
-
+	<name>applicationRunner</name>
 	<description>demo spring boot data jpa</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
-		<main.basedir>${project.basedir}</main.basedir>
+		<main.basedir>${project.parent.basedir}</main.basedir>
 	</properties>
-	<modules>
-		<module>entityone</module>
-		<module>entitytwo</module>
-        <module>applicationRunner</module>
-    </modules>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>macauyeah.personal.springbootdatajpa</groupId>
+			<artifactId>entityone</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>macauyeah.personal.springbootdatajpa</groupId>
+			<artifactId>entitytwo</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
-			<version>2.7.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -50,7 +51,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<skip>true</skip>
+					<skip>false</skip>
 				</configuration>
 			</plugin>
 		</plugins>

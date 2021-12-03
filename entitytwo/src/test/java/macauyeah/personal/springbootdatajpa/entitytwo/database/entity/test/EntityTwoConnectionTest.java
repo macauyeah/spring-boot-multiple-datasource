@@ -1,4 +1,4 @@
-package macauyeah.personal.springbootdatajpa.entityone.database.entity.test;
+package macauyeah.personal.springbootdatajpa.entitytwo.database.entity.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -7,19 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import macauyeah.personal.springbootdatajpa.entityone.database.repository.SomethingOneRepo;
+import macauyeah.personal.springbootdatajpa.entitytwo.database.repository.SomethingTwoRepo;
 
 @ActiveProfiles("test")
 @SpringBootTest
-public class EntityOneConnectionTest {
+public class EntityTwoConnectionTest {
     @Autowired
-    private SomethingOneRepo oneRepo;
+    private SomethingTwoRepo twoRepo;
 
     @Test
     public void test() {
-        assertNotNull(oneRepo);
-        if (oneRepo.count() > 1) {
-            oneRepo.findAll();
+        assertNotNull(twoRepo);
+        if (twoRepo.count() > 1) {
+            twoRepo.findAll();
         }
 
     }

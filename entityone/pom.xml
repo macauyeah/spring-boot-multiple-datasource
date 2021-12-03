@@ -12,7 +12,7 @@
 	<artifactId>entityone</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 	<name>entityone</name>
-	<description>dump emp data to esfi</description>
+	<description>demo spring boot data jpa</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
