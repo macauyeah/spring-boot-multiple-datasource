@@ -11,9 +11,22 @@ public class SomethingOne {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
     private Integer columnOne;
+    @Version
+    @Column(nullable = false)
+    private long version = 0L;
+
     // #endregion attribute
 
     // #region getter setter
+
+    public long getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+
     public BigInteger getId() {
         return this.id;
     }
