@@ -1,4 +1,4 @@
-package macauyeah.personal.springbootdatajpa.entitytwo.database.configuration;
+package macauyeah.personal.springbootdatajpa.applicationRunner.configuration;
 
 import java.util.Map;
 import java.util.HashMap;

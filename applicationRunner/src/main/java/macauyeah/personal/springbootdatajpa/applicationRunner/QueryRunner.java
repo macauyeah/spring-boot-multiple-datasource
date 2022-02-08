@@ -23,8 +23,6 @@ import macauyeah.personal.springbootdatajpa.applicationRunner.service.QueryServi
 @SpringBootApplication
 // @formatter:off
 @ComponentScan(basePackages = {
-	"macauyeah.personal.springbootdatajpa.entityone.database",
-	"macauyeah.personal.springbootdatajpa.entitytwo.database",
 	"macauyeah.personal.springbootdatajpa.applicationRunner.configuration",
 	"macauyeah.personal.springbootdatajpa.applicationRunner.service"
 })

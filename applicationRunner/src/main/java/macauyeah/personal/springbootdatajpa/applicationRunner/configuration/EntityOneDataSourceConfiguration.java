@@ -1,7 +1,7 @@
 package macauyeah.personal.springbootdatajpa.applicationRunner.configuration;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
-import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -28,40 +28,40 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 // @formatter:off
 @EnableJpaRepositories(
-    entityManagerFactoryRef = "localOneEntityManagerFactory",
-    transactionManagerRef = "localOneTransactionManager",
+    entityManagerFactoryRef = "entityOneEntityManagerFactory",
+    transactionManagerRef = "entityOneTransactionManager",
     basePackages = {
-        "macauyeah.personal.springbootdatajpa.localone.database.entity",
-        "macauyeah.personal.springbootdatajpa.localone.database.repository"
+        "macauyeah.personal.springbootdatajpa.entityone.database.entity",
+        "macauyeah.personal.springbootdatajpa.entityone.database.repository"
     }
 )
 // @formatter:on
-public class LocalDummyJpaConfig { // won't work if no primary data defined, so create a dummy primary here
-    @Bean(name = "localOneDataSource")
+public class EntityOneDataSourceConfiguration {
+    @Bean(name = "entityOneDataSource")
     @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.macauyeah.personal.localone")
-    public DataSource localOneDataSource() {
+    @ConfigurationProperties(prefix = "spring.datasource.macauyeah.personal.entityone")
+    public DataSource entityOneDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "localOneTransactionManager")
-    PlatformTransactionManager localOneTransactionManager(
-            @Qualifier("localOneEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = "entityOneTransactionManager")
+    PlatformTransactionManager entityOneTransactionManager(
+            @Qualifier("entityOneEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
     // @formatter:off
-    @Bean(name = "localOneEntityManagerFactory")
+    @Bean(name = "entityOneEntityManagerFactory")
     @Primary
-    LocalContainerEntityManagerFactoryBean localOneEntityManagerFactory(
+    LocalContainerEntityManagerFactoryBean entityOneEntityManagerFactory(
         EntityManagerFactoryBuilder factoryBuilder,
-        @Qualifier("localOneDataSource") DataSource dataSource,
-        @Qualifier("localOneJpaVendorAdapter") JpaVendorAdapter vendorAdapter)
+        @Qualifier("entityOneDataSource") DataSource dataSource,
+        @Qualifier("entityOneJpaVendorAdapter") JpaVendorAdapter vendorAdapter)
     {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = factoryBuilder
             .dataSource(dataSource)
             .properties(jpaProperties())
-            .packages("macauyeah.personal.springbootdatajpa.localone.database.entity")
+            .packages("macauyeah.personal.springbootdatajpa.entityone.database.entity")
             .build();
         entityManagerFactoryBean.setJpaVendorAdapter(vendorAdapter);
         return entityManagerFactoryBean;
@@ -70,20 +70,20 @@ public class LocalDummyJpaConfig { // won't work if no primary data defined, so 
 
     protected Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
-        props.put("hibernate.physical_naming_strategy", SpringPhysicalNamingStrategy.class.getName());
+        props.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         props.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
         return props;
     }
 
-    @Bean(name = "localOneJdbcTemplate")
+    @Bean(name = "entityOneJdbcTemplate")
     @Primary
-    public JdbcTemplate localOneJdbcTemplate(@Qualifier("localOneDataSource") DataSource dataSource) {
+    public JdbcTemplate entityOneJdbcTemplate(@Qualifier("entityOneDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
-    @Bean(name = { "localOneJpaVendorAdapter" })
+    @Bean(name = { "entityOneJpaVendorAdapter" })
     @Primary
-    @ConfigurationProperties(prefix = "spring.jpa.macauyeah.personal.localone")
+    @ConfigurationProperties(prefix = "spring.jpa.macauyeah.personal.entityone")
     public JpaVendorAdapter jpaVendorAdapter() {
         return (JpaVendorAdapter) new HibernateJpaVendorAdapter();
     }
