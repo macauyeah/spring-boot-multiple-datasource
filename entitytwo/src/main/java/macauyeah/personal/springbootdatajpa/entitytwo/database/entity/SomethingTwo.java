@@ -4,7 +4,10 @@ import java.math.BigInteger;
 
 import javax.persistence.*;
 
+import org.hibernate.envers.Audited;
+
 @Entity
+@Audited
 public class SomethingTwo {
     // #region attribute
     @Id
