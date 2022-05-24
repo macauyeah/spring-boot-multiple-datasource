@@ -1,6 +1,8 @@
 package macauyeah.personal.springbootdatajpa.applicationRunner.service;
 
-import java.util.Random;
+import java.util.ArrayList;
+
+// import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import macauyeah.personal.springbootdatajpa.entityone.database.repository.SomethingOneRepo;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.entity.*;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.repository.*;
+import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SearchSpecification;
+import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SomethingTwoFilter;
 
 @Service
 public class QueryService {
@@ -36,5 +40,10 @@ public class QueryService {
         two.setRef1(ref1);
         two.addRef2(ref2);
         somethingTwoRepo.save(two);
+
+        SomethingTwoFilter somethingTwoFilter = new SomethingTwoFilter();
+        somethingTwoFilter.setColumnOne(2);
+        somethingTwoRepo.findAll(SearchSpecification.deepSearchAllFields(SomethingTwo.class, somethingTwoFilter,
+                new ArrayList<String>()));
     }
 }
