@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -37,6 +38,24 @@ public class SearchSpecification {
                 Path<?> path = getPathByNestedFields(root, childFieldName);
                 return cb.equal(path.as(fieldValue.getClass()), fieldValue);
             };
+        }
+    }
+
+    public static Predicate equalSearch(
+            CriteriaBuilder cb,
+            Join<?, ?> joinResult,
+            Path<?> upperLevelPath,
+            String fieldName, Object fieldValue) {
+        Path<?> path;
+        if (joinResult != null) {
+            path = joinResult.get(fieldName);
+        } else {
+            path = upperLevelPath.get(fieldName);
+        }
+        if (fieldValue.getClass().equals(String.class)) {
+            return cb.like(path.as(String.class), "%" + fieldValue + "%");
+        } else {
+            return cb.equal(path.as(fieldValue.getClass()), fieldValue);
         }
     }
 
@@ -74,64 +93,40 @@ public class SearchSpecification {
         return fields;
     }
 
-    public static <E, S> Specification<E> deepSearchAllFields(Class<E> rootEntityType, S searchRequest,
-            List<String> childFieldNames) {
-        Specification<E> sp = SearchSpecification.emptySearch(rootEntityType);
-        if (searchRequest == null) {
-            return sp;
-        }
+    public static <E, S> Specification<E> deepSearchAllFields(Class<E> rootEntityType, S searchRequest) {
+        return (root, query, cb) -> {
+            Predicate predicate = cb.and();
+            root.getJoins();
+            return deepSearch(predicate, cb, root, root, searchRequest);
+        };
+    }
+
+    public static Predicate deepSearch(Predicate predicate, CriteriaBuilder cb, Root<?> root, Path<?> path,
+            Object searchRequest) {
         List<Field> fields = getAllFields(searchRequest.getClass());
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
-                if (field.get(searchRequest) == null) {
+                Object fieldValue = field.get(searchRequest);
+                if (fieldValue == null) {
                     continue;
                 }
                 Class<?> fieldType = field.getType();
-                List<String> fieldPathNames = new ArrayList<>(childFieldNames);
-                fieldPathNames.add(field.getName());
                 if (isSupportedEqualType(fieldType)) {
-                    Object fieldValue = field.get(searchRequest);
-                    sp = sp.and(
-                            customDeepSearch(rootEntityType, fieldPathNames, fieldType.cast(fieldValue)));
-                } else if (isSupportedBetweenRangeType(fieldType)) {
-                    sp = sp.and(betweenDeepSearch(rootEntityType, fieldPathNames,
-                            (BetweenSearchRequest<?>) field.get(searchRequest)));
-                } else if (fieldType.equals(ForeignKeyInSearchRequest.class)) {
-                    ForeignKeyInSearchRequest inSearchRequest = (ForeignKeyInSearchRequest) field
-                            .get(searchRequest);
-                    if (inSearchRequest.getIn().size() > 0) {
-                        sp = sp.and(foreignKeyInDeepSearch(rootEntityType, fieldPathNames, inSearchRequest.getIn()));
-                    }
-                } else if (fieldType.equals(OneToManySearchRequest.class)) {
-                    OneToManySearchRequest containRequest = (OneToManySearchRequest) field.get(searchRequest);
-                    if (containRequest != null) {
-                        sp = sp.and(containSearch(rootEntityType, fieldPathNames, containRequest));
-                    }
+                    predicate = cb.and(predicate,
+                            equalSearch(cb, null, path, field.getName(), fieldValue));
+                } else if (searchRequest instanceof OneToManySearchRequest) {
+                    // TODO fix the join problem;
+                    // Join<?, ?> nextLevel = root.join(field.getName());
+                    // predicate = cb.and(predicate,
+                    //         deepSearch(predicate, cb, root, nextLevel, fieldValue));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 LOG.warn(e.getMessage());
                 e.printStackTrace();
             }
         }
-        return sp;
-    }
-
-    public static <E> Specification<E> containSearch(
-            Class<E> rootEntityType,
-            List<String> childFieldNames,
-            OneToManySearchRequest oneToManySearchRequest) {
-        return (root, query, cb) -> {
-            Join<?, ?> joinResult = getJoinByNestedFields(root, childFieldNames);
-            // loop through all attribute oneToManySearchRequest
-            Predicate predicate = cb.and();
-            // if (oneToManySearchRequest.getIdentityNumber() != null) {
-            // predicate = cb.and(predicate,
-            // cb.like(joinResult.get("identityNumber").as(String.class),
-            // "%" + oneToManySearchRequest.getIdentityNumber() + "%"));
-            // }
-            return predicate;
-        };
+        return predicate;
     }
 
     private static boolean isSupportedEqualType(Class<?> fieldType) {
@@ -143,6 +138,10 @@ public class SearchSpecification {
 
     private static boolean isSupportedBetweenRangeType(Class<?> fieldType) {
         return fieldType.equals(DateBetweenSearchRequest.class) || fieldType.equals(IntegerBetweenSearchRequest.class);
+    }
+
+    private static boolean isSupportedOneToManyType(Class<?> fieldType) {
+        return fieldType.equals(Ref2Filter.class);
     }
 
     private static Path<?> getPathByNestedFields(Root<?> root, List<String> childFieldName) {
