@@ -2,6 +2,7 @@ package macauyeah.personal.springbootdatajpa.applicationRunner.service;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 // import java.util.Random;
 
@@ -57,11 +58,14 @@ public class QueryService {
         ref2Filter.setColumnTwo("2");
         somethingTwoFilter.setRef2List(ref2Filter);
         ForeignKeyInSearchRequest foreignKeyInSearchRequest = new ForeignKeyInSearchRequest();
-        ArrayList<BigInteger> ids = new ArrayList<BigInteger>();
+        List<BigInteger> ids = new ArrayList<>();
         ids.add(BigInteger.valueOf(1L));
         ids.add(BigInteger.valueOf(200L));
         foreignKeyInSearchRequest.setIn(ids);
         somethingTwoFilter.setRef3(foreignKeyInSearchRequest);
-        somethingTwoRepo.findAll(SearchSpecification.deepSearchAllFields(SomethingTwo.class, somethingTwoFilter));
+        List<SomethingTwo> somethingTwoList = somethingTwoRepo.findAll(SearchSpecification.deepSearchAllFields(SomethingTwo.class, somethingTwoFilter));
+        for (SomethingTwo somethingTwo: somethingTwoList){
+            LOG.info("somethingTwo search Result:" + somethingTwo.getId().toString());
+        }
     }
 }
