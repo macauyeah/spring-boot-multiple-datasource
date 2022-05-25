@@ -18,9 +18,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
 public class SearchSpecification {
-    public static Logger LOG = LoggerFactory.getLogger(SearchSpecification.class);
+    private static Logger LOG = LoggerFactory.getLogger(SearchSpecification.class);
 
-    public static Predicate equalSearch(
+    public static <E, S> Specification<E> deepSearchAllFields(Class<E> rootEntityType, S searchRequest) {
+        return (root, query, cb) -> {
+            return deepSearch(cb, root, null, searchRequest);
+        };
+    }
+
+    private static Predicate equalSearch(
             CriteriaBuilder cb,
             Path<?> path, Object fieldValue) {
         if (fieldValue.getClass().equals(String.class)) {
@@ -30,7 +36,7 @@ public class SearchSpecification {
         }
     }
 
-    public static <X extends Comparable<? super X>> Predicate betweenDeepSearch(
+    private static <X extends Comparable<? super X>> Predicate betweenSearch(
             CriteriaBuilder cb,
             Path<?> path,
             BetweenSearchRequest<X> request) {
@@ -42,14 +48,14 @@ public class SearchSpecification {
         return cb.between(path.as(dataType), lowerBound, upperBound);
     }
 
-    public static Predicate foreignKeyInDeepSearch(
+    private static Predicate foreignKeyInSearch(
             CriteriaBuilder cb,
             Path<?> path,
             ForeignKeyInSearchRequest request) {
         return path.get("id").as(BigInteger.class).in(request.getIn());
     }
 
-    public static <S> List<Field> getAllFields(Class<S> searchRequestType) {
+    private static <S> List<Field> getAllFields(Class<S> searchRequestType) {
         Field[] fieldArray = searchRequestType.getDeclaredFields();
         List<Field> fields = new ArrayList<>();
         if (fieldArray != null && fieldArray.length > 0) {
@@ -61,13 +67,7 @@ public class SearchSpecification {
         return fields;
     }
 
-    public static <E, S> Specification<E> deepSearchAllFields(Class<E> rootEntityType, S searchRequest) {
-        return (root, query, cb) -> {
-            return deepSearch(cb, root, null, searchRequest);
-        };
-    }
-
-    public static Predicate deepSearch(CriteriaBuilder cb, Root<?> root, Join<?, ?> joinObj,
+    private static Predicate deepSearch(CriteriaBuilder cb, Root<?> root, Join<?, ?> joinObj,
             Object searchRequest) {
         Predicate predicate = cb.and();
         List<Field> fields = getAllFields(searchRequest.getClass());
@@ -99,10 +99,10 @@ public class SearchSpecification {
                             equalSearch(cb, path.get(field.getName()), fieldValue));
                 } else if (fieldValue instanceof BetweenSearchRequest) {
                     predicate = cb.and(predicate,
-                            betweenDeepSearch(cb, path.get(field.getName()), (BetweenSearchRequest<?>) fieldValue));
+                            betweenSearch(cb, path.get(field.getName()), (BetweenSearchRequest<?>) fieldValue));
                 } else if (fieldValue instanceof ForeignKeyInSearchRequest) {
                     predicate = cb.and(predicate,
-                            foreignKeyInDeepSearch(cb, path.get(field.getName()),
+                            foreignKeyInSearch(cb, path.get(field.getName()),
                                     (ForeignKeyInSearchRequest) fieldValue));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
