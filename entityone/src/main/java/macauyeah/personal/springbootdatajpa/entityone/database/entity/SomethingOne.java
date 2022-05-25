@@ -11,6 +11,7 @@ public class SomethingOne {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
     private Integer columnOne;
+    private String columnTwo;
     @Version
     @Column(nullable = false)
     private long version = 0L;
@@ -41,6 +42,14 @@ public class SomethingOne {
 
     public void setColumnOne(Integer columnOne) {
         this.columnOne = columnOne;
+    }
+
+    public String getColumnTwo() {
+        return columnTwo;
+    }
+
+    public void setColumnTwo(String columnTwo) {
+        this.columnTwo = columnTwo;
     }
     // #endregion getter setter
 }

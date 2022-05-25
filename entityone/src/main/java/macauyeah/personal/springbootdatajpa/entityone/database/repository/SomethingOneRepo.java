@@ -13,4 +13,5 @@ import java.math.BigInteger;
 @Repository
 public interface SomethingOneRepo extends JpaRepository<SomethingOne, BigInteger>, JpaSpecificationExecutor<SomethingOne> {
     List<SomethingOne> findAllByColumnOneIn(Collection<Integer> columnOne);
+    List<SomethingOne> findAllByColumnTwoContains(String columnTwo);
 }

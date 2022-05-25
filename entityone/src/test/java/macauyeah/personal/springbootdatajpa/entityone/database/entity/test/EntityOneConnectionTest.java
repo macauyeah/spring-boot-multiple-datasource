@@ -32,6 +32,7 @@ public class EntityOneConnectionTest {
         }
         SomethingOne one = new SomethingOne();
         one.setColumnOne(1);
+        one.setColumnTwo("columnTwo");
         oneRepo.save(one);
 
         one.setColumnOne(2);
@@ -45,5 +46,7 @@ public class EntityOneConnectionTest {
                 oneRepo.save(one); // if you mark the test as transactional, no exception will be flow
             });
         }
+
+        oneRepo.findAllByColumnTwoContains("Tw");
     }
 }
