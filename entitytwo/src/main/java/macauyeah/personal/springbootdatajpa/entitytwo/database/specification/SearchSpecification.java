@@ -41,17 +41,21 @@ public class SearchSpecification {
         }
     }
 
+    // public static Predicate equalSearch(
+    // CriteriaBuilder cb,
+    // Path<?> upperLevelPath,
+    // String fieldName, Object fieldValue) {
+    // Path<?> path = upperLevelPath.get(fieldName);
+    // if (fieldValue.getClass().equals(String.class)) {
+    // return cb.like(path.as(String.class), "%" + fieldValue + "%");
+    // } else {
+    // return cb.equal(path.as(fieldValue.getClass()), fieldValue);
+    // }
+    // }
+
     public static Predicate equalSearch(
             CriteriaBuilder cb,
-            Join<?, ?> joinResult,
-            Path<?> upperLevelPath,
-            String fieldName, Object fieldValue) {
-        Path<?> path;
-        if (joinResult != null) {
-            path = joinResult.get(fieldName);
-        } else {
-            path = upperLevelPath.get(fieldName);
-        }
+            Path<?> path, Object fieldValue) {
         if (fieldValue.getClass().equals(String.class)) {
             return cb.like(path.as(String.class), "%" + fieldValue + "%");
         } else {
@@ -95,15 +99,20 @@ public class SearchSpecification {
 
     public static <E, S> Specification<E> deepSearchAllFields(Class<E> rootEntityType, S searchRequest) {
         return (root, query, cb) -> {
-            Predicate predicate = cb.and();
-            root.getJoins();
-            return deepSearch(predicate, cb, root, root, searchRequest);
+            return deepSearch(cb, root, null, searchRequest);
         };
     }
 
-    public static Predicate deepSearch(Predicate predicate, CriteriaBuilder cb, Root<?> root, Path<?> path,
+    public static Predicate deepSearch(CriteriaBuilder cb, Root<?> root, Join<?, ?> joinObj,
             Object searchRequest) {
+        Predicate predicate = cb.and();
         List<Field> fields = getAllFields(searchRequest.getClass());
+        Path<?> path;
+        if (joinObj != null) {
+            path = joinObj;
+        } else {
+            path = root;
+        }
         for (Field field : fields) {
             try {
                 field.setAccessible(true);
@@ -113,13 +122,19 @@ public class SearchSpecification {
                 }
                 Class<?> fieldType = field.getType();
                 if (isSupportedEqualType(fieldType)) {
+                    // won't use join
                     predicate = cb.and(predicate,
-                            equalSearch(cb, null, path, field.getName(), fieldValue));
-                } else if (searchRequest instanceof OneToManySearchRequest) {
-                    // TODO fix the join problem;
-                    // Join<?, ?> nextLevel = root.join(field.getName());
-                    // predicate = cb.and(predicate,
-                    //         deepSearch(predicate, cb, root, nextLevel, fieldValue));
+                            equalSearch(cb, path.get(field.getName()), fieldValue)); // won't forward join, end here
+                            // same level, all predicate with and
+                } else if (fieldValue instanceof OneToManySearchRequest) {
+                    Join<?, ?> joinResult;
+                    if (joinObj != null) { // it's not the first join
+                        joinResult = joinObj.join(field.getName());
+                    } else { // only first layer the root is not null
+                        joinResult = root.join(field.getName());
+                    }
+                    predicate = cb.and(predicate,
+                            deepSearch(cb, null, joinResult, fieldValue));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 LOG.warn(e.getMessage());

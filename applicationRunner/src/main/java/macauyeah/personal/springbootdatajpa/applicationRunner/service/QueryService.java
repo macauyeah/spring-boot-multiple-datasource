@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import macauyeah.personal.springbootdatajpa.entityone.database.repository.SomethingOneRepo;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.entity.*;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.repository.*;
+import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.Ref2Filter;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SearchSpecification;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SomethingTwoFilter;
 
@@ -43,7 +44,9 @@ public class QueryService {
 
         SomethingTwoFilter somethingTwoFilter = new SomethingTwoFilter();
         somethingTwoFilter.setColumnOne(2);
-        somethingTwoRepo.findAll(SearchSpecification.deepSearchAllFields(SomethingTwo.class, somethingTwoFilter,
-                new ArrayList<String>()));
+        Ref2Filter ref2Filter = new Ref2Filter();
+        ref2Filter.setColumnOne(1);
+        somethingTwoFilter.setRef2List(ref2Filter);
+        somethingTwoRepo.findAll(SearchSpecification.deepSearchAllFields(SomethingTwo.class, somethingTwoFilter));
     }
 }
