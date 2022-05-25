@@ -1,15 +1,15 @@
 package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
 
-public class Ref1Filter extends ManyToOneSearchRequest {
-    private Integer columnOne;
+public class Ref1Filter extends JoinSearchRequest {
+    private IntegerBetweenSearchRequest columnOne;
     private String columnTwo;
     private String columnThree;
 
-    public Integer getColumnOne() {
+    public IntegerBetweenSearchRequest getColumnOne() {
         return columnOne;
     }
 
-    public void setColumnOne(Integer columnOne) {
+    public void setColumnOne(IntegerBetweenSearchRequest columnOne) {
         this.columnOne = columnOne;
     }
 

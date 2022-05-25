@@ -22,7 +22,17 @@ public class SomethingTwo {
     private Ref1 ref1;
     @OneToMany
     private List<Ref2> ref2List = new ArrayList<>();
+    @ManyToOne
+    private Ref3 ref3;
     // #endregion attribute
+
+    public void addRef2(Ref2 ref2) {
+        this.getRef2List().add(ref2);
+    }
+
+    public void removeRef2(Ref2 ref2) {
+        this.getRef2List().remove(ref2);
+    }
 
     // #region getter setter
     public BigInteger getId() {
@@ -72,13 +82,13 @@ public class SomethingTwo {
     public void setRef2List(List<Ref2> ref2List) {
         this.ref2List = ref2List;
     }
+
+    public Ref3 getRef3() {
+        return ref3;
+    }
+
+    public void setRef3(Ref3 ref3) {
+        this.ref3 = ref3;
+    }
     // #endregion getter setter
-
-    public void addRef2(Ref2 ref2){
-        this.getRef2List().add(ref2);
-    }
-
-    public void removeRef2(Ref2 ref2){
-        this.getRef2List().remove(ref2);
-    }
 }

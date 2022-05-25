@@ -1,5 +1,6 @@
 package macauyeah.personal.springbootdatajpa.applicationRunner.service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 // import java.util.Random;
@@ -13,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import macauyeah.personal.springbootdatajpa.entityone.database.repository.SomethingOneRepo;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.entity.*;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.repository.*;
+import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.ForeignKeyInSearchRequest;
+import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.IntegerBetweenSearchRequest;
+import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.Ref1Filter;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.Ref2Filter;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SearchSpecification;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SomethingTwoFilter;
@@ -44,9 +48,20 @@ public class QueryService {
 
         SomethingTwoFilter somethingTwoFilter = new SomethingTwoFilter();
         somethingTwoFilter.setColumnOne(2);
+        Ref1Filter ref1Filter = new Ref1Filter();
+        IntegerBetweenSearchRequest iRequest = new IntegerBetweenSearchRequest(0, 100);
+        ref1Filter.setColumnOne(iRequest);
+        ref1Filter.setColumnThree("3");
+        somethingTwoFilter.setRef1(ref1Filter);
         Ref2Filter ref2Filter = new Ref2Filter();
-        ref2Filter.setColumnOne(1);
+        ref2Filter.setColumnTwo("2");
         somethingTwoFilter.setRef2List(ref2Filter);
+        ForeignKeyInSearchRequest foreignKeyInSearchRequest = new ForeignKeyInSearchRequest();
+        ArrayList<BigInteger> ids = new ArrayList<BigInteger>();
+        ids.add(BigInteger.valueOf(1L));
+        ids.add(BigInteger.valueOf(200L));
+        foreignKeyInSearchRequest.setIn(ids);
+        somethingTwoFilter.setRef3(foreignKeyInSearchRequest);
         somethingTwoRepo.findAll(SearchSpecification.deepSearchAllFields(SomethingTwo.class, somethingTwoFilter));
     }
 }

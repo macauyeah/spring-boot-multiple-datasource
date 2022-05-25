@@ -1,5 +1,5 @@
 package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
 
-public class OneToManySearchRequest {
+public class JoinSearchRequest {
     
 }

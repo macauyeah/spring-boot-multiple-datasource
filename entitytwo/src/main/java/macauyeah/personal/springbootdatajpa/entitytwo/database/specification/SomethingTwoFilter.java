@@ -4,22 +4,23 @@ public class SomethingTwoFilter {
     private Integer columnOne;
     private String columnTwo;
     private String columnThree;
-    private ManyToOneSearchRequest ref1;
-    private OneToManySearchRequest ref2List;
+    private Ref1Filter ref1;
+    private Ref2Filter ref2List;
+    private ForeignKeyInSearchRequest ref3;
 
-    public ManyToOneSearchRequest getRef1() {
+    public Ref1Filter getRef1() {
         return ref1;
     }
 
-    public void setRef1(ManyToOneSearchRequest ref1) {
+    public void setRef1(Ref1Filter ref1) {
         this.ref1 = ref1;
     }
 
-    public OneToManySearchRequest getRef2List() {
+    public Ref2Filter getRef2List() {
         return ref2List;
     }
 
-    public void setRef2List(OneToManySearchRequest ref2List) {
+    public void setRef2List(Ref2Filter ref2List) {
         this.ref2List = ref2List;
     }
 
@@ -45,6 +46,14 @@ public class SomethingTwoFilter {
 
     public void setColumnThree(String columnThree) {
         this.columnThree = columnThree;
+    }
+
+    public ForeignKeyInSearchRequest getRef3() {
+        return ref3;
+    }
+
+    public void setRef3(ForeignKeyInSearchRequest ref3) {
+        this.ref3 = ref3;
     }
 
 }

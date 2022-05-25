@@ -1,9 +1,26 @@
-package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
+package macauyeah.personal.springbootdatajpa.entitytwo.database.entity;
 
-public class Ref2Filter extends JoinSearchRequest {
+import java.math.BigInteger;
+import javax.persistence.*;
+import org.hibernate.envers.Audited;
+
+@Entity
+@Audited
+public class Ref3 {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private BigInteger id;
     private Integer columnOne;
     private String columnTwo;
     private String columnThree;
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
 
     public Integer getColumnOne() {
         return columnOne;
