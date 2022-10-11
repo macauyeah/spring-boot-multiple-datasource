@@ -36,18 +36,6 @@ public class SearchSpecification {
         }
     }
 
-    private static <X extends Comparable<? super X>> Predicate betweenSearch(
-            CriteriaBuilder cb,
-            Path<?> path,
-            BetweenSearchRequest<X> request) {
-        @SuppressWarnings("unchecked")
-        Class<X> dataType = (Class<X>) request.getLowerBound().getClass();
-
-        X lowerBound = request.getLowerBound();
-        X upperBound = request.getUpperBound();
-        return cb.between(path.as(dataType), lowerBound, upperBound);
-    }
-
     private static Predicate foreignKeyInSearch(
             CriteriaBuilder cb,
             Path<?> path,
@@ -97,13 +85,13 @@ public class SearchSpecification {
                 } else if (isSupportedEqualType(fieldType)) {
                     predicate = cb.and(predicate,
                             equalSearch(cb, path.get(field.getName()), fieldValue));
-                } else if (fieldValue instanceof BetweenSearchRequest) {
-                    predicate = cb.and(predicate,
-                            betweenSearch(cb, path.get(field.getName()), (BetweenSearchRequest<?>) fieldValue));
                 } else if (fieldValue instanceof ForeignKeyInSearchRequest) {
                     predicate = cb.and(predicate,
                             foreignKeyInSearch(cb, path.get(field.getName()),
                                     (ForeignKeyInSearchRequest) fieldValue));
+                } else if (fieldValue instanceof OperatorSearchRequest) {
+                    predicate = cb.and(predicate,
+                            operatorSearch(cb, path.get(field.getName()), (OperatorSearchRequest<?>) fieldValue));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 LOG.warn(e.getMessage());
@@ -118,5 +106,44 @@ public class SearchSpecification {
                 fieldType.equals(Date.class) ||
                 fieldType.equals(Boolean.class) ||
                 fieldType.equals(Integer.class);
+    }
+
+    private static <X extends Comparable<? super X>> Predicate operatorSearch(
+            CriteriaBuilder cb,
+            Path<?> path, OperatorSearchRequest<X> fieldValue) {
+        if (fieldValue.getIsNull() != null && fieldValue.getIsNull().booleanValue() == true) {
+            return cb.isNull(path);
+        } else if (fieldValue.getBetween() != null
+                && fieldValue.getBetween().getLowerBound() != null
+                && fieldValue.getBetween().getUpperBound() != null) {
+            @SuppressWarnings("unchecked")
+            Class<X> dataType = (Class<X>) fieldValue.getBetween().getLowerBound().getClass();
+            X lowerBound = fieldValue.getBetween().getLowerBound();
+            X upperBound = fieldValue.getBetween().getUpperBound();
+            return cb.between(path.as(dataType), lowerBound, upperBound);
+        } else if (fieldValue.getEqualTo() != null) {
+            @SuppressWarnings("unchecked")
+            Class<X> dataType = (Class<X>) fieldValue.getEqualTo().getClass();
+            return cb.equal(path.as(dataType), fieldValue.getEqualTo());
+        } else if (fieldValue.getLike() != null) {
+            return cb.like(path.as(String.class), "%" + fieldValue.getLike() + "%");
+        } else if (fieldValue.getGreaterThanOrEqualTo() != null) {
+            @SuppressWarnings("unchecked")
+            Class<X> dataType = (Class<X>) fieldValue.getGreaterThanOrEqualTo().getClass();
+            return cb.greaterThanOrEqualTo(path.as(dataType),
+                    fieldValue.getGreaterThanOrEqualTo());
+        } else if (fieldValue.getLessThanOrEqualTo() != null) {
+            @SuppressWarnings("unchecked")
+            Class<X> dataType = (Class<X>) fieldValue.getLessThanOrEqualTo().getClass();
+            return cb.lessThanOrEqualTo(path.as(dataType),
+                    fieldValue.getLessThanOrEqualTo());
+        } else if (fieldValue.getIn() != null
+                && fieldValue.getIn().size() > 0) {
+            @SuppressWarnings("unchecked")
+            Class<X> dataType = (Class<X>) fieldValue.getIn().get(0).getClass();
+            return path.as(dataType).in(fieldValue.getIn());
+        } else {
+            throw new RuntimeException("no valid operator in:" + fieldValue.toString());
+        }
     }
 }
