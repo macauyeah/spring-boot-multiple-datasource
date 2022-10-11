@@ -1,5 +1,7 @@
 package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
 
+import macauyeah.personal.springbootdatajpa.searchspecification.ForeignKeyInSearchRequest;
+
 public class SomethingTwoFilter {
     private Integer columnOne;
     private String columnTwo;

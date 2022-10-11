@@ -1,4 +1,4 @@
-package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
+package macauyeah.personal.springbootdatajpa.searchspecification;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;

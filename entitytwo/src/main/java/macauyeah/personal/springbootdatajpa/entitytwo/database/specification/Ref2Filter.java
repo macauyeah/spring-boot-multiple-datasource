@@ -1,5 +1,7 @@
 package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
 
+import macauyeah.personal.springbootdatajpa.searchspecification.JoinSearchRequest;
+
 public class Ref2Filter implements JoinSearchRequest {
     private Integer columnOne;
     private String columnTwo;

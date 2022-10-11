@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import macauyeah.personal.springbootdatajpa.entityone.database.repository.SomethingOneRepo;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.entity.*;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.repository.*;
-import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.ForeignKeyInSearchRequest;
-import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.IntegerBetweenSearchRequest;
+import macauyeah.personal.springbootdatajpa.searchspecification.ForeignKeyInSearchRequest;
+import macauyeah.personal.springbootdatajpa.searchspecification.IntegerBetweenSearchRequest;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.Ref1Filter;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.Ref2Filter;
-import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SearchSpecification;
+import macauyeah.personal.springbootdatajpa.searchspecification.SearchSpecification;
 import macauyeah.personal.springbootdatajpa.entitytwo.database.specification.SomethingTwoFilter;
 
 @Service

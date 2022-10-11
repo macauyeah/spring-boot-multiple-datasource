@@ -9,9 +9,9 @@
 		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>macauyeah.personal.springbootdatajpa</groupId>
-	<artifactId>applicationRunner</artifactId>
+	<artifactId>searchspecification</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
-	<name>applicationRunner</name>
+	<name>searchspecification</name>
 	<description>demo spring boot data jpa</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,37 +21,27 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>macauyeah.personal.springbootdatajpa</groupId>
-			<artifactId>entityone</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>macauyeah.personal.springbootdatajpa</groupId>
-			<artifactId>entitytwo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<skip>false</skip>
-				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 

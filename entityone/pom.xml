@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>macauyeah.personal.springbootdatajpa</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>macauyeah.personal.springbootdatajpa</groupId>
 	<artifactId>entityone</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>entityone</name>
 	<description>demo spring boot data jpa</description>
 	<properties>
