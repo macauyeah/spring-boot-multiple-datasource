@@ -2,9 +2,9 @@ package macauyeah.personal.springbootdatajpa.searchspecification;
 
 import java.util.List;
 
-public class OperatorSearchRequest<X extends Comparable<? super X>> {
+public class OperatorFilter<X extends Comparable<? super X>> {
     private Boolean isNull;
-    private BetweenSearchRequest<X> between;
+    private BetweenFilter<X> between;
     private List<X> in;
     private X equalTo;
     private X lessThanOrEqualTo;
@@ -31,11 +31,11 @@ public class OperatorSearchRequest<X extends Comparable<? super X>> {
         this.isNull = isNull;
     }
 
-    public BetweenSearchRequest<X> getBetween() {
+    public BetweenFilter<X> getBetween() {
         return between;
     }
 
-    public void setBetween(BetweenSearchRequest<X> between) {
+    public void setBetween(BetweenFilter<X> between) {
         this.between = between;
     }
 

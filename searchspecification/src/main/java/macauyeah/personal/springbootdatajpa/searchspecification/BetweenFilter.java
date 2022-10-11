@@ -1,8 +1,13 @@
 package macauyeah.personal.springbootdatajpa.searchspecification;
 
-public class BetweenSearchRequest<X extends Comparable<? super X>> {
+public class BetweenFilter<X extends Comparable<? super X>> {
     private X lowerBound;
     private X upperBound;
+
+    public BetweenFilter(X lower, X upper){
+        this.lowerBound = lower;
+        this.upperBound = upper;
+    }
 
     public X getLowerBound() {
         return lowerBound;

@@ -39,7 +39,7 @@ public class SearchSpecification {
     private static Predicate foreignKeyInSearch(
             CriteriaBuilder cb,
             Path<?> path,
-            ForeignKeyInSearchRequest request) {
+            ForeignKeyInFilter request) {
         return path.get("id").as(BigInteger.class).in(request.getIn());
     }
 
@@ -85,13 +85,13 @@ public class SearchSpecification {
                 } else if (isSupportedEqualType(fieldType)) {
                     predicate = cb.and(predicate,
                             equalSearch(cb, path.get(field.getName()), fieldValue));
-                } else if (fieldValue instanceof ForeignKeyInSearchRequest) {
+                } else if (fieldValue instanceof ForeignKeyInFilter) {
                     predicate = cb.and(predicate,
                             foreignKeyInSearch(cb, path.get(field.getName()),
-                                    (ForeignKeyInSearchRequest) fieldValue));
-                } else if (fieldValue instanceof OperatorSearchRequest) {
+                                    (ForeignKeyInFilter) fieldValue));
+                } else if (fieldValue instanceof OperatorFilter) {
                     predicate = cb.and(predicate,
-                            operatorSearch(cb, path.get(field.getName()), (OperatorSearchRequest<?>) fieldValue));
+                            operatorSearch(cb, path.get(field.getName()), (OperatorFilter<?>) fieldValue));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 LOG.warn(e.getMessage());
@@ -110,7 +110,7 @@ public class SearchSpecification {
 
     private static <X extends Comparable<? super X>> Predicate operatorSearch(
             CriteriaBuilder cb,
-            Path<?> path, OperatorSearchRequest<X> fieldValue) {
+            Path<?> path, OperatorFilter<X> fieldValue) {
         if (fieldValue.getIsNull() != null && fieldValue.getIsNull().booleanValue() == true) {
             return cb.isNull(path);
         } else if (fieldValue.getBetween() != null

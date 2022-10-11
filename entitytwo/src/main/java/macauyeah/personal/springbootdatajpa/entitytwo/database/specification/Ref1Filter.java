@@ -1,18 +1,18 @@
 package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
 
-import macauyeah.personal.springbootdatajpa.searchspecification.OperatorSearchRequest;
+import macauyeah.personal.springbootdatajpa.searchspecification.OperatorFilter;
 import macauyeah.personal.springbootdatajpa.searchspecification.JoinSearchRequest;
 
 public class Ref1Filter implements JoinSearchRequest {
-    private OperatorSearchRequest<Integer> columnOne;
+    private OperatorFilter<Integer> columnOne;
     private String columnTwo;
     private String columnThree;
 
-    public OperatorSearchRequest<Integer> getColumnOne() {
+    public OperatorFilter<Integer> getColumnOne() {
         return columnOne;
     }
 
-    public void setColumnOne(OperatorSearchRequest<Integer> columnOne) {
+    public void setColumnOne(OperatorFilter<Integer> columnOne) {
         this.columnOne = columnOne;
     }
 

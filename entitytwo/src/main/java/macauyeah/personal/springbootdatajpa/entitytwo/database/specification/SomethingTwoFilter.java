@@ -1,6 +1,6 @@
 package macauyeah.personal.springbootdatajpa.entitytwo.database.specification;
 
-import macauyeah.personal.springbootdatajpa.searchspecification.ForeignKeyInSearchRequest;
+import macauyeah.personal.springbootdatajpa.searchspecification.ForeignKeyInFilter;
 
 public class SomethingTwoFilter {
     private Integer columnOne;
@@ -8,7 +8,7 @@ public class SomethingTwoFilter {
     private String columnThree;
     private Ref1Filter ref1;
     private Ref2Filter ref2List;
-    private ForeignKeyInSearchRequest ref3;
+    private ForeignKeyInFilter ref3;
 
     public Ref1Filter getRef1() {
         return ref1;
@@ -50,11 +50,11 @@ public class SomethingTwoFilter {
         this.columnThree = columnThree;
     }
 
-    public ForeignKeyInSearchRequest getRef3() {
+    public ForeignKeyInFilter getRef3() {
         return ref3;
     }
 
-    public void setRef3(ForeignKeyInSearchRequest ref3) {
+    public void setRef3(ForeignKeyInFilter ref3) {
         this.ref3 = ref3;
     }
 
