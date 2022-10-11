@@ -17,7 +17,7 @@ But in project **applicationRunner** ([pom.xml](applicationRunner/pom.xml)), it 
 
 ## Specification
 entitytwo defines a [SearchSpecification.java](
-entitytwo/src/main/java/macauyeah/personal/springbootdatajpa/entitytwo/database/specification/SearchSpecification.java) , it mainly uses generic type to search any entity within that project. It also supports **OneToMany** , **ManyToOne**  relationship.
+searchspecification/src/main/java/macauyeah/personal/springbootdatajpa/searchspecification/SearchSpecification.java) , it mainly uses generic type to search any entity within that project. It also supports **OneToMany** , **ManyToOne**  relationship.
 
 Examples
 - [SomethingTwoFilter.java](entitytwo/src/main/java/macauyeah/personal/springbootdatajpa/entitytwo/database/specification/SomethingTwoFilter.java)
