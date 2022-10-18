@@ -24,6 +24,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.util.StringUtils;
 
 @Configuration
 @EnableTransactionManagement
@@ -45,7 +46,7 @@ public class EntityTwoDataSourceConfiguration {
     private String hibernateFormatSql;
     @Value("${spring.jpa.macauyeah.personal.entitytwo.hibernate.dialect}")
     private String hibernateDialect;
-    @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.use-new-id-generator-mappings}")
+    @Value("${spring.jpa.macauyeah.personal.entitytwo.hibernate.use-new-id-generator-mappings}")
     private String hibernateUseNewIdGeneratorMappings;
 
     @Bean(name = "entityTwoDataSource")
@@ -81,10 +82,18 @@ public class EntityTwoDataSourceConfiguration {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         props.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
-        props.put("hibernate.ddl-auto", hibernateDdlAuto);
-        props.put("hibernate.format_sql", hibernateFormatSql);
-        props.put("hibernate.dialect", hibernateDialect);
-        props.put("hibernate.use-new-id-generator-mappings", hibernateUseNewIdGeneratorMappings);
+        if (StringUtils.hasLength(hibernateDdlAuto)) {
+            props.put("hibernate.ddl-auto", hibernateDdlAuto);
+        }
+        if (StringUtils.hasLength(hibernateFormatSql)) {
+            props.put("hibernate.format_sql", hibernateFormatSql);
+        }
+        if (StringUtils.hasLength(hibernateDialect)) {
+            props.put("hibernate.dialect", hibernateDialect);
+        }
+        if (StringUtils.hasLength(hibernateUseNewIdGeneratorMappings)) {
+            props.put("hibernate.use-new-id-generator-mappings", hibernateUseNewIdGeneratorMappings);
+        }
         return props;
     }
 
