@@ -46,7 +46,7 @@ public class EntityTwoDataSourceConfiguration {
     private String hibernateFormatSql;
     @Value("${spring.jpa.macauyeah.personal.entitytwo.hibernate.dialect}")
     private String hibernateDialect;
-    @Value("${spring.jpa.macauyeah.personal.entitytwo.hibernate.use-new-id-generator-mappings}")
+    @Value("${spring.jpa.macauyeah.personal.entitytwo.hibernate.id.new_generator_mappings}")
     private String hibernateUseNewIdGeneratorMappings;
 
     @Bean(name = "entityTwoDataSource")
@@ -92,7 +92,7 @@ public class EntityTwoDataSourceConfiguration {
             props.put("hibernate.dialect", hibernateDialect);
         }
         if (StringUtils.hasLength(hibernateUseNewIdGeneratorMappings)) {
-            props.put("hibernate.use-new-id-generator-mappings", hibernateUseNewIdGeneratorMappings);
+            props.put("hibernate.id.new_generator_mappings", hibernateUseNewIdGeneratorMappings);
         }
         return props;
     }
