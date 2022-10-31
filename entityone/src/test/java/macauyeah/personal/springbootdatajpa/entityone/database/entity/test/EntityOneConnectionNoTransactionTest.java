@@ -3,6 +3,7 @@ package macauyeah.personal.springbootdatajpa.entityone.database.entity.test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -24,7 +25,6 @@ public class EntityOneConnectionNoTransactionTest {
     private Logger LOG = LoggerFactory.getLogger(EntityOneConnectionNoTransactionTest.class);
 
     @Test
-    // @Transactional
     public void test() {
         assertNotNull(oneRepo);
         if (oneRepo.count() > 1) {
@@ -46,9 +46,7 @@ public class EntityOneConnectionNoTransactionTest {
                 oneRepo.save(one); // if you mark the test as transactional, no exception will be flow
             });
         } else {
-            LOG.info("no ObjectOptimisticLockingFailureException");
-            one.setVersion(0);
-            oneRepo.save(one); // if you mark the test as transactional, no exception will be flow
+            assertTrue(false);
         }
 
         oneRepo.findAllByColumnTwoContains("Tw");

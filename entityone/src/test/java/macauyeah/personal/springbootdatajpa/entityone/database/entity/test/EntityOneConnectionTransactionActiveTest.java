@@ -1,7 +1,6 @@
 package macauyeah.personal.springbootdatajpa.entityone.database.entity.test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.transaction.Transactional;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -20,14 +18,13 @@ import macauyeah.personal.springbootdatajpa.entityone.database.repository.Someth
 
 @ActiveProfiles("test")
 @SpringBootTest
-@Transactional
 public class EntityOneConnectionTransactionActiveTest {
     @Autowired
     private SomethingOneRepo oneRepo;
     private Logger LOG = LoggerFactory.getLogger(EntityOneConnectionTransactionActiveTest.class);
 
     @Test
-    // @Transactional
+    @Transactional
     public void test() {
         assertNotNull(oneRepo);
         if (oneRepo.count() > 1) {
@@ -42,16 +39,12 @@ public class EntityOneConnectionTransactionActiveTest {
         oneRepo.save(one);
 
         assertTrue(TransactionSynchronizationManager.isActualTransactionActive());
-        if (!TransactionSynchronizationManager.isActualTransactionActive()){
-            LOG.info("testing ObjectOptimisticLockingFailureException");
-            assertThrows(ObjectOptimisticLockingFailureException.class, () -> {
-                one.setVersion(0);
-                oneRepo.save(one); // if you mark the test as transactional, no exception will be flow
-            });
-        } else {
+        if (TransactionSynchronizationManager.isActualTransactionActive()){
             LOG.info("no ObjectOptimisticLockingFailureException");
             one.setVersion(0);
             oneRepo.save(one); // if you mark the test as transactional, no exception will be flow
+        } else {
+            assertTrue(false);
         }
 
         oneRepo.findAllByColumnTwoContains("Tw");
