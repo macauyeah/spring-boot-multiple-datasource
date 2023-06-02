@@ -12,6 +12,13 @@ public class VersionControl {
     @Id
     private String id;
     private String remark;
+    private Date clientBirthday;
+    public Date getClientBirthday(){
+        return this.clientBirthday;
+    }
+    private void setClientBirthday(Date newDate){
+        this.clientBirthday = newDate;
+    }
     @Version
     @Column(nullable = false)
     private long version = 0L;

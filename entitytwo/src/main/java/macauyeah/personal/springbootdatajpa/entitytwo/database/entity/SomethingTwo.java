@@ -2,11 +2,17 @@ package macauyeah.personal.springbootdatajpa.entitytwo.database.entity;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.*;
-
 import org.hibernate.envers.Audited;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @Audited
@@ -18,6 +24,7 @@ public class SomethingTwo {
     private Integer columnOne;
     private String columnTwo;
     private String columnThree;
+    private Date clientBirthday;
     @ManyToOne
     private Ref1 ref1;
     @OneToMany
