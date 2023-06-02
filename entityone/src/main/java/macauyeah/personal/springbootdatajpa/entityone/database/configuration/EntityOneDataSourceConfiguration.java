@@ -39,14 +39,12 @@ import jakarta.persistence.EntityManagerFactory;
 )
 // @formatter:on
 public class EntityOneDataSourceConfiguration {
-    @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.ddl-auto}")
+    @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.hbm2ddl.auto}")
     private String hibernateDdlAuto;
     @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.format_sql}")
     private String hibernateFormatSql;
     @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.dialect}")
     private String hibernateDialect;
-    @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.id.new_generator_mappings}")
-    private String hibernateUseNewIdGeneratorMappings;
 
     @Bean(name = "entityOneDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.macauyeah.personal.entityone")
@@ -82,16 +80,13 @@ public class EntityOneDataSourceConfiguration {
         props.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         props.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
         if (StringUtils.hasLength(hibernateDdlAuto)) {
-            props.put("hibernate.ddl-auto", hibernateDdlAuto);
+            props.put("hibernate.hbm2ddl.auto", hibernateDdlAuto);
         }
         if (StringUtils.hasLength(hibernateFormatSql)) {
             props.put("hibernate.format_sql", hibernateFormatSql);
         }
         if (StringUtils.hasLength(hibernateDialect)) {
             props.put("hibernate.dialect", hibernateDialect);
-        }
-        if (StringUtils.hasLength(hibernateUseNewIdGeneratorMappings)) {
-            props.put("hibernate.id.new_generator_mappings", hibernateUseNewIdGeneratorMappings);
         }
         return props;
     }

@@ -1,18 +1,17 @@
 package macauyeah.personal.springbootdatajpa.applicationRunner.configuration;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
-import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
-import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -25,6 +24,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.StringUtils;
+
+import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @EnableTransactionManagement
@@ -39,14 +40,12 @@ import org.springframework.util.StringUtils;
 )
 // @formatter:on
 public class EntityOneDataSourceConfiguration {
-    @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.ddl-auto}")
+    @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.hbm2ddl.auto}")
     private String hibernateDdlAuto;
     @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.format_sql}")
     private String hibernateFormatSql;
     @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.dialect}")
     private String hibernateDialect;
-    @Value("${spring.jpa.macauyeah.personal.entityone.hibernate.id.new_generator_mappings}")
-    private String hibernateUseNewIdGeneratorMappings;
 
     @Bean(name = "entityOneDataSource")
     @Primary
@@ -84,16 +83,13 @@ public class EntityOneDataSourceConfiguration {
         props.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         props.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
         if (StringUtils.hasLength(hibernateDdlAuto)) {
-            props.put("hibernate.ddl-auto", hibernateDdlAuto);
+            props.put("hibernate.hbm2ddl.auto", hibernateDdlAuto);
         }
         if (StringUtils.hasLength(hibernateFormatSql)) {
             props.put("hibernate.format_sql", hibernateFormatSql);
         }
         if (StringUtils.hasLength(hibernateDialect)) {
             props.put("hibernate.dialect", hibernateDialect);
-        }
-        if (StringUtils.hasLength(hibernateUseNewIdGeneratorMappings)) {
-            props.put("hibernate.id.new_generator_mappings", hibernateUseNewIdGeneratorMappings);
         }
         return props;
     }
