@@ -3,7 +3,7 @@ package macauyeah.personal.springbootdatajpa.entitythree.database.entity;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import org.springframework.util.StringUtils;
 

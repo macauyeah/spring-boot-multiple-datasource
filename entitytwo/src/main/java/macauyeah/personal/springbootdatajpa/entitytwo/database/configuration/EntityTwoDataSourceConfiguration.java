@@ -3,7 +3,7 @@ package macauyeah.personal.springbootdatajpa.entitytwo.database.configuration;
 import java.util.Map;
 import java.util.HashMap;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;

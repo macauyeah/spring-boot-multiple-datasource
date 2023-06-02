@@ -2,9 +2,9 @@ package macauyeah.personal.springbootdatajpa.entitythree;
 
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ public class VersionControlQueryRunner implements ApplicationRunner {
 			em.merge(vControl);
 			em.flush(); // version 3
 			transaction.commit();
-		} catch (javax.persistence.OptimisticLockException e) {
+		} catch (jakarta.persistence.OptimisticLockException e) {
 			LOG.error(e.getMessage());
 			transaction.rollback();
 		}
@@ -78,7 +78,7 @@ public class VersionControlQueryRunner implements ApplicationRunner {
 			em.merge(vControl);
 			em.flush(); // version 3
 			transaction.commit();
-		} catch (javax.persistence.OptimisticLockException e) {
+		} catch (jakarta.persistence.OptimisticLockException e) {
 			LOG.error(e.getMessage());
 			transaction.rollback();
 		}

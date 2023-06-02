@@ -1,7 +1,7 @@
 package macauyeah.personal.springbootdatajpa.entitytwo.database.entity;
 
 import java.math.BigInteger;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
 
 @Entity

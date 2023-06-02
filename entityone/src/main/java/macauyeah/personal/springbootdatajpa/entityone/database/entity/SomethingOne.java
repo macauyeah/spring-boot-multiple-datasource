@@ -2,7 +2,7 @@ package macauyeah.personal.springbootdatajpa.entityone.database.entity;
 
 import java.math.BigInteger;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class SomethingOne {
