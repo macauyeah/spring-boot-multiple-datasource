@@ -25,3 +25,15 @@ Examples
 
 ## Envers
 to be testing
+
+# Mariadb
+example command to create mariadb database and user
+```
+mariadb -u root -p
+create database entityone;
+# create user access from any host
+CREATE USER entityone IDENTIFIED BY 'entityone';
+# create all permission on one database to one user
+GRANT ALL PRIVILEGES ON entityone.* TO entityone;
+FLUSH PRIVILEGES;
+```

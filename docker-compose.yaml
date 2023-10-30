@@ -1,0 +1,8 @@
+services:
+  mariadb:
+    image: mariadb:11.1.2-jammy
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: example
