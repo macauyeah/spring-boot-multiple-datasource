@@ -11,4 +11,11 @@ vscode:
     - vscjava.vscode-java-pack
 
 tasks:
-  - init: mvn clean compile
+  - name: init m2 dependency
+    init: mvn clean compile
+  - name: run docker compose
+    init: |
+      cp /etc/hosts /tmp/hosts
+      echo "127.0.0.1 mariadb" >> /tmp/hosts
+      sudo cp /tmp/hosts /etc/hosts
+    command: docker compose up
