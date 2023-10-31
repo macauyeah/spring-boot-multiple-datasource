@@ -10,7 +10,9 @@ public class SomethingOne {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private BigInteger id;
+    @Column(columnDefinition = "mediumint(9)")
     private Integer columnOne;
+    @Column(columnDefinition = "VARCHAR(512)")
     private String columnTwo;
     @Version
     @Column(nullable = false)
