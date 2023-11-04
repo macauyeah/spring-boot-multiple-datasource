@@ -27,6 +27,7 @@ services:
     restart: unless-stopped
     volumes:
       - mariadb-data:/var/lib/mysql
+      - ../init-script/00-create-database.sql:/docker-entrypoint-initdb.d/00-create-database.sql
     environment:
       MARIADB_ROOT_PASSWORD: example
 
