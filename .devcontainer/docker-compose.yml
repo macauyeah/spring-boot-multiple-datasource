@@ -1,7 +1,7 @@
 version: '3.8'
 
 volumes:
-  postgres-data:
+  mariadb-data:
 
 services:
   app:
@@ -9,12 +9,6 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    environment:
-      # NOTE: POSTGRES_DB/USER/PASSWORD should match values in db container
-        POSTGRES_PASSWORD: postgres
-        POSTGRES_USER: postgres
-        POSTGRES_DB: postgres
-        POSTGRES_HOSTNAME: postgresdb
 
     volumes:
       - ../..:/workspaces:cached
@@ -29,16 +23,12 @@ services:
     # (Adding the "ports" property to this file will not forward from a Codespace.)
 
   db:
-    container_name: postgresdb
-    image: postgres:latest
+    image: mariadb:11.1.2-jammy
     restart: unless-stopped
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - mariadb-data:/var/lib/mysql
     environment:
-      # NOTE: POSTGRES_DB/USER/PASSWORD should match values in app container
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      MARIADB_ROOT_PASSWORD: example
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
