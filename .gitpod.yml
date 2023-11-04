@@ -18,4 +18,4 @@ tasks:
       cp /etc/hosts /tmp/hosts
       echo "127.0.0.1 mariadb" >> /tmp/hosts
       sudo cp /tmp/hosts /etc/hosts
-    command: docker compose up
+    command: docker compose -f .gitpod.docker-compose.yaml up
